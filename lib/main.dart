@@ -131,10 +131,41 @@ class _MyHomePageState extends State<MyHomePage> {
           }
         },
         onGeoPointClicked: (geoPoint) {
+          var key = '${geoPoint.latitude}_${geoPoint.longitude}';
           showModalBottomSheet(
               context: context,
               builder: (context) {
-                return const Card();
+                return Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text('Position ${markerMap[key]}',
+                              style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blue
+                            ),),
+                            const Divider(thickness: 1,),
+                            Text(key),
+                            ],
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: ()=> Navigator.pop(context),
+                          child: const Icon(Icons.clear),
+                        )
+                      ],
+                    ),
+                  ),
+                );
               });
         },
       ), // This trailing comma makes auto-formatting nicer for build methods.
