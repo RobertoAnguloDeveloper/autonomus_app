@@ -9,30 +9,30 @@ import 'dart:convert';
 
 
 void main(){
-  runApp(MyApp());
+  runApp(Autonomus_app());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class Autonomus_app extends StatelessWidget {
+  const Autonomus_app({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MyHomePage(),
+      home: Home(),
     );
   }
 }
 
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+class Home extends StatefulWidget {
+  const Home({Key? key}) : super(key: key);
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<Home> createState() => _HomeState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _HomeState extends State<Home> {
   final start = TextEditingController();
   final end = TextEditingController();
   bool isVisible = false;
@@ -49,9 +49,9 @@ class _MyHomePageState extends State<MyHomePage> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                myInput(controler: start, hint: 'Enter Starting PostCode'),
+                myInput(controler: start, hint: 'Ingrese su direccion de Origen'),
                 SizedBox(height: 15,),
-                myInput(controler: end, hint: 'Enter Ending PostCode'),
+                myInput(controler: end, hint: 'Ingrese su direccion de Destino'),
                 SizedBox(height: 15,),
                 ElevatedButton(
                     style: ElevatedButton.styleFrom(backgroundColor: Colors.grey[500]),
@@ -83,7 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         print(routpoints);
                       });
                     },
-                    child: Text('Press')),
+                    child: Text('Ir')),
                 SizedBox(height: 10,),
                 SizedBox(
                   height: 500,
