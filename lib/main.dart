@@ -49,7 +49,7 @@ class _HomeState extends State<Home> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                myInput(controler: start, hint: 'Ingrese su direccion de Origen'),
+                myInput(controler: start, hint: 'Enter your start point of the route'),
                 SizedBox(height: 15,),
                 myInput(controler: end, hint: 'Ingrese su direccion de Destino'),
                 SizedBox(height: 15,),
@@ -70,13 +70,13 @@ class _HomeState extends State<Home> {
                       print(response.body);
                       setState(() {                                                     
                         routpoints = [];
-                        var ruter = jsonDecode(response.body)['routes'][0]['geometry']['coordinates'];
-                        for(int i=0; i< ruter.length; i++){
-                          var reep = ruter[i].toString();
-                          reep = reep.replaceAll("[","");
-                          reep = reep.replaceAll("]","");
-                          var lat1 = reep.split(',');
-                          var long1 = reep.split(",");
+                        var router = jsonDecode(response.body)['routes'][0]['geometry']['coordinates'];
+                        for(int i=0; i< router.length; i++){
+                          var coordinates = router[i].toString();
+                          coordinates = coordinates.replaceAll("[","");
+                          coordinates = coordinates.replaceAll("]","");
+                          var lat1 = coordinates.split(',');
+                          var long1 = coordinates.split(",");
                           routpoints.add(LatLng( double.parse(lat1[1]), double.parse(long1[0])));
                         }
                         isVisible = !isVisible;
