@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
+import '../login/login.dart';
 import 'CurrentLocation.dart';
 import 'MapCard.dart';
 import 'myInput.dart';
@@ -9,14 +10,19 @@ import 'package:flutter_map/plugin_api.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+// ignore: camel_case_types
 class Autonomus_app extends StatelessWidget {
   const Autonomus_app({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Home(),
+      initialRoute: LoginPage.id,
+      routes: {
+        LoginPage.id:(context) => LoginPage(),
+      },
     );
   }
 }

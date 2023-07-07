@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'AutonomusApp.dart';
+import 'autonomus_app/AutonomusApp.dart';
 
 void main() {
   runApp(const Autonomus_app());
