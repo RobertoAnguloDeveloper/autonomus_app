@@ -17,6 +17,7 @@ class Autonomus_app extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Home(),
@@ -34,6 +35,8 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   LocationService locationService = LocationService();
   //final start = TextEditingController();
+  List<double> start = [];
+  List<double> endL = [];
   final end = TextEditingController();
   bool isVisible = false;
   List<LatLng> routpoints = [LatLng(52.05884, -1.345583)];
@@ -61,7 +64,7 @@ class _HomeState extends State<Home> {
                 //   height: 15,
                 // ),
                 myInput(
-                    controler: end, hint: 'Ingrese su direccion de Destino'),
+                    controler: end, hint: 'Ingrese su dirección de Destino'),
                 SizedBox(
                   height: 15,
                 ),
@@ -71,6 +74,7 @@ class _HomeState extends State<Home> {
                     onPressed: () async {
                       List<double> startCoordinates =
                           await locationService.getCurrentLocation();
+                      start.addAll(startCoordinates);
                       double startLatitude = startCoordinates[0];
                       double startLongitude = startCoordinates[1];
 
@@ -124,6 +128,24 @@ class _HomeState extends State<Home> {
                           urlTemplate:
                               'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                           userAgentPackageName: 'com.example.app',
+                        ),
+                        MarkerLayer(
+                          markers: [
+                            Marker(
+                              point: new LatLng(10.392133, -75.481015),
+                              builder: (context) => Icon(
+                                Icons.location_on,
+                                color: Colors.green,
+                              ),
+                            ),
+                            Marker(
+                              point: new LatLng(10.372800, -75.456639),
+                              builder: (context) => Icon(
+                                Icons.location_on,
+                                color: Colors.red,
+                              ),
+                            ),
+                          ],
                         ),
                         PolylineLayer(
                           polylineCulling: false,
