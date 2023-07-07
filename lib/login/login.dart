@@ -23,7 +23,7 @@ class _LoginPageState extends State<LoginPage> {
           children: [
             Flexible(
               child: Image.asset(
-                'assets/image/flutter_logo.png',
+                'assets/image/nn.png',
                 height: 250.0,
               ),
             ),
@@ -48,11 +48,11 @@ class _LoginPageState extends State<LoginPage> {
   Widget _userTextField() {
     return StreamBuilder(builder: (BuildContext context, AsyncSnapshot) {
       return Container(
-        padding: EdgeInsets.symmetric(horizontal: 20.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: TextField(
           controller: licenseNumber,
-          keyboardType: TextInputType.streetAddress,
-          decoration: InputDecoration(
+          keyboardType: TextInputType.text,
+          decoration: const InputDecoration(
             icon: Icon(Icons.airport_shuttle_outlined),
             hintText: 'License number',
             labelText: 'License number',
@@ -82,12 +82,25 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _bottonLogin() {
-    return StreamBuilder(
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
+    return Builder(builder: (BuildContext context) {
       return ElevatedButton(
-        onPressed: () {
-          //Color.alphaBlend(Colors.blue, Colors.white12);
-          fetchData(licenseNumber);
+        onPressed: () async {
+          var a1 = licenseNumber.text;
+          var url = Uri.parse('http://10.0.2.2:5000/vehicle/get/$a1');
+          print(url);
+          try {
+            var response = await http.get(url);
+            print(jsonDecode(response.body));
+            if (response.statusCode == 200) {
+              String data = response.body.toString();
+              print(data+"Me tiene que mandar para la otra pagina");
+            } else {
+              print("Por favor verifique su usuario y/o contraseña "+ response.statusCode);
+              throw Exception("Fallo al cargar los datos");
+            }
+          } catch (e) {
+            print('Ocurrió un error al realizar la solicitud: $e');
+          }
         },
         child: Container(
             padding:
@@ -101,17 +114,5 @@ class _LoginPageState extends State<LoginPage> {
             )),
       );
     });
-  }
-}
-
-void fetchData(licenseNumber) async {
-  String url = 'http://127.0.0.1:5000/vehicles/get/$licenseNumber';
-  final response = await http.get(Uri.parse(url));
-  print(jsonDecode(response.body));
-  if (response.statusCode == 200) {
-    String data = response.body;
-    print(data);
-  } else {
-    throw Exception("Fallo al cargar los datos");
   }
 }
