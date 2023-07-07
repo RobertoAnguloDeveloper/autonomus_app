@@ -17,7 +17,6 @@ class Autonomus_app extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Home(),
@@ -35,8 +34,6 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   LocationService locationService = LocationService();
   //final start = TextEditingController();
-  List<double> start = [];
-  List<double> endL = [];
   final end = TextEditingController();
   bool isVisible = false;
   List<LatLng> routpoints = [LatLng(52.05884, -1.345583)];
@@ -46,12 +43,12 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Routing',
+          'AUTONOMUS APP',
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
         ),
-        backgroundColor: Colors.grey[500],
+        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
       ),
-      backgroundColor: Colors.grey[300],
+      backgroundColor: const Color.fromARGB(255, 0, 0, 0),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(12.0),
@@ -70,11 +67,12 @@ class _HomeState extends State<Home> {
                 ),
                 ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.grey[500]),
+                        backgroundColor: Color.fromARGB(255, 0, 21, 255),
+                        foregroundColor: Color.fromARGB(255, 255, 255, 255),
+                        fixedSize: Size(100, 50)),
                     onPressed: () async {
                       List<double> startCoordinates =
                           await locationService.getCurrentLocation();
-                      start.addAll(startCoordinates);
                       double startLatitude = startCoordinates[0];
                       double startLongitude = startCoordinates[1];
 
@@ -108,8 +106,10 @@ class _HomeState extends State<Home> {
                         isVisible = !isVisible;
                         print(routpoints);
                       });
+
+                      
                     },
-                    child: Text('Ir')),
+                    child: Text('Ir', style: TextStyle(fontSize: 20.0))),
                 SizedBox(
                   height: 10,
                 ),
@@ -118,10 +118,12 @@ class _HomeState extends State<Home> {
                   width: 400,
                   child: Visibility(
                     visible: isVisible,
-                    child: FlutterMap(
+                    child:FlutterMap(
                       options: MapOptions(
                         center: routpoints[0],
-                        zoom: 10,
+                        zoom: 13.0,
+                        maxZoom: 25.0,
+                        scrollWheelVelocity: 5.0,
                       ),
                       children: [
                         TileLayer(
@@ -132,17 +134,33 @@ class _HomeState extends State<Home> {
                         MarkerLayer(
                           markers: [
                             Marker(
-                              point: new LatLng(10.392133, -75.481015),
+                              point: routpoints[0],
                               builder: (context) => Icon(
-                                Icons.location_on,
-                                color: Colors.green,
+                                Icons.local_taxi,
+                                weight: 20,
+                                size: 50,
+                                shadows: [
+                                  BoxShadow(
+                                      color: Colors.black.withOpacity(1.0),
+                                      blurRadius: 5.0,
+                                      offset: Offset(2.0, 2.0))
+                                ],
+                                color: Color.fromARGB(255, 0, 30, 255),
                               ),
                             ),
                             Marker(
-                              point: new LatLng(10.372800, -75.456639),
+                              point: routpoints[routpoints.length - 1],
                               builder: (context) => Icon(
-                                Icons.location_on,
-                                color: Colors.red,
+                                Icons.adjust_rounded,
+                                weight: 50,
+                                shadows: [
+                                  BoxShadow(
+                                      color: Colors.black.withOpacity(1.0),
+                                      blurRadius: 5.0,
+                                      offset: Offset(2.0, 2.0))
+                                ],
+                                size: 60,
+                                color: Color.fromARGB(255, 77, 255, 0),
                               ),
                             ),
                           ],
@@ -152,8 +170,8 @@ class _HomeState extends State<Home> {
                           polylines: [
                             Polyline(
                                 points: routpoints,
-                                color: Colors.blue,
-                                strokeWidth: 9)
+                                color: Color.fromARGB(255, 255, 0, 0),
+                                strokeWidth: 7)
                           ],
                         )
                       ],
