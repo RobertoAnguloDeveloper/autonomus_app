@@ -1,3 +1,4 @@
+import 'package:autonomus_app/login/register.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import '../login/login.dart';
@@ -19,9 +20,11 @@ class Autonomus_app extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Home(),
-      initialRoute: LoginPage.id,
+      //initialRoute: LoginPage.id,
+      initialRoute: RegisterPage.id,
       routes: {
-        LoginPage.id:(context) => LoginPage(),
+        RegisterPage.id:(context) => RegisterPage(),
+        //LoginPage.id:(context) => LoginPage(),
       },
     );
   }

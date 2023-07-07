@@ -22,18 +22,11 @@ class _LoginPageState extends State<LoginPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Flexible(
-              child: Image.asset(
-                'assets/image/nn.png',
-                height: 250.0,
-              ),
+              child: Image.asset('assets/image/logo1.png',height: 250.0,),
             ),
-            SizedBox(
-              height: 15.0,
-            ),
+            SizedBox (height: 15.0,),
             _userTextField(),
-            SizedBox(
-              height: 15.0,
-            ),
+            SizedBox(height: 15.0,),
             _passwordTextField(),
             SizedBox(
               height: 20.0,
@@ -95,16 +88,15 @@ class _LoginPageState extends State<LoginPage> {
               String data = response.body.toString();
               print(data+"Me tiene que mandar para la otra pagina");
             } else {
-              print("Por favor verifique su usuario y/o contraseña $response.statusCode");
+              print("Por favor verifique su usuario y/o contraseña");
               throw Exception("Fallo al cargar los datos");
             }
           } catch (e) {
-            print('Ocurrió un error al realizar la solicitud: $e');
+            print('Por favor verifique su usuario y/o contraseña');
           }
         },
         child: Container(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
+            padding: const EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
             child: const Text(
               'Iniciar Sesion',
               style: TextStyle(
