@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
   static String id = "login_page";
@@ -7,23 +10,34 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final licenseNumber = TextEditingController();
+  final password = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Flexible(
-                child:
-                  Image.asset('assets/image/flutter_logo.png',height: 250.0,),
-                ),
-            SizedBox(height: 15.0,),
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Flexible(
+              child: Image.asset(
+                'assets/image/flutter_logo.png',
+                height: 250.0,
+              ),
+            ),
+            SizedBox(
+              height: 15.0,
+            ),
             _userTextField(),
-            SizedBox(height: 15.0,),
+            SizedBox(
+              height: 15.0,
+            ),
             _passwordTextField(),
-            SizedBox(height: 20.0,),
+            SizedBox(
+              height: 20.0,
+            ),
             _bottonLogin(),
           ],
         )),
@@ -32,8 +46,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _userTextField() {
-    final licenseNumber = TextEditingController();
-
     return StreamBuilder(builder: (BuildContext context, AsyncSnapshot) {
       return Container(
         padding: EdgeInsets.symmetric(horizontal: 20.0),
@@ -49,18 +61,14 @@ class _LoginPageState extends State<LoginPage> {
         ),
       );
     });
-    
   }
 
   Widget _passwordTextField() {
-
-    final password = TextEditingController();
-
     return StreamBuilder(builder: (BuildContext context, AsyncSnapshot) {
       return Container(
         padding: EdgeInsets.symmetric(horizontal: 20.0),
         child: TextField(
-          controller:password,
+          controller: password,
           keyboardType: TextInputType.visiblePassword,
           obscureText: true,
           decoration: InputDecoration(
@@ -78,17 +86,32 @@ class _LoginPageState extends State<LoginPage> {
         builder: (BuildContext context, AsyncSnapshot snapshot) {
       return ElevatedButton(
         onPressed: () {
-          Color.alphaBlend(Colors.blue, Colors.white12);
+          //Color.alphaBlend(Colors.blue, Colors.white12);
+          fetchData(licenseNumber);
         },
         child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
-            child: Text('Iniciar Sesion',
-            style: TextStyle(
-              fontSize: 16.0,
-              fontWeight: FontWeight.bold,
-            ),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
+            child: const Text(
+              'Iniciar Sesion',
+              style: TextStyle(
+                fontSize: 16.0,
+                fontWeight: FontWeight.bold,
+              ),
             )),
       );
     });
+  }
+}
+
+void fetchData(licenseNumber) async {
+  String url = 'http://127.0.0.1:5000/vehicles/get/$licenseNumber';
+  final response = await http.get(Uri.parse(url));
+  print(jsonDecode(response.body));
+  if (response.statusCode == 200) {
+    String data = response.body;
+    print(data);
+  } else {
+    throw Exception("Fallo al cargar los datos");
   }
 }
