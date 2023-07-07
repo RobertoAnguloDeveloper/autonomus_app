@@ -76,6 +76,10 @@ class _HomeState extends State<Home> {
                       double startLatitude = startCoordinates[0];
                       double startLongitude = startCoordinates[1];
 
+                      if (!end.text.contains(",")) {
+                        end.text = end.text + ", Cartagena";
+                      }
+
                       // List<Location> start_l =
                       //     await locationFromAddress(start.text);
                       List<Location> end_l =
@@ -106,8 +110,6 @@ class _HomeState extends State<Home> {
                         isVisible = !isVisible;
                         print(routpoints);
                       });
-
-                      
                     },
                     child: Text('Ir', style: TextStyle(fontSize: 20.0))),
                 SizedBox(
@@ -118,7 +120,7 @@ class _HomeState extends State<Home> {
                   width: 400,
                   child: Visibility(
                     visible: isVisible,
-                    child:FlutterMap(
+                    child: FlutterMap(
                       options: MapOptions(
                         center: routpoints[0],
                         zoom: 13.0,
