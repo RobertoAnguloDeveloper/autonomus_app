@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class MapCard extends StatelessWidget {
   double duration,distance; // Duración de la ruta en segundos
 
