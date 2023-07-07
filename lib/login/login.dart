@@ -93,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
             print(jsonDecode(response.body));
             if (response.statusCode == 200) {
               String data = response.body.toString();
-              print(data+"Me tiene que mandar para la otra pagina");
+              print(data+"Debe enviar a la pagina de inicio");
             } else {
               print("Por favor verifique su usuario y/o contraseña $response.statusCode");
               throw Exception("Fallo al cargar los datos");
