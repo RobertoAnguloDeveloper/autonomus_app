@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'CurrentLocation.dart';
+import 'MapCard.dart';
 import 'myInput.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -36,6 +37,7 @@ class _HomeState extends State<Home> {
   //final start = TextEditingController();
   final end = TextEditingController();
   bool isVisible = false;
+  double duration = 0.0;
   List<LatLng> routpoints = [LatLng(52.05884, -1.345583)];
 
   @override
@@ -93,9 +95,13 @@ class _HomeState extends State<Home> {
                       var url = Uri.parse(
                           'http://router.project-osrm.org/route/v1/driving/$v2,$v1;$v4,$v3?steps=true&annotations=true&geometries=geojson&overview=full');
                       var response = await http.get(url);
+                      // print(url);
                       print(response.body);
+
                       setState(() {
                         routpoints = [];
+                        duration = (jsonDecode(response.body)['routes'][0]
+                            ['legs'][0]['duration'])/60;
                         var router = jsonDecode(response.body)['routes'][0]
                             ['geometry']['coordinates'];
                         for (int i = 0; i < router.length; i++) {
@@ -122,8 +128,8 @@ class _HomeState extends State<Home> {
                     visible: isVisible,
                     child: FlutterMap(
                       options: MapOptions(
-                        center: routpoints[0],
-                        zoom: 13.0,
+                        center: routpoints[((routpoints.length-1)/2).toInt()],
+                        zoom: 15.0,
                         maxZoom: 25.0,
                         scrollWheelVelocity: 5.0,
                       ),
@@ -145,12 +151,14 @@ class _HomeState extends State<Home> {
                                   BoxShadow(
                                       color: Colors.black.withOpacity(1.0),
                                       blurRadius: 5.0,
-                                      offset: Offset(2.0, 2.0))
+                                      offset: Offset(1.0, 3.0),
+                                      spreadRadius: 20.0)
                                 ],
-                                color: Color.fromARGB(255, 0, 30, 255),
+                                color: Color.fromARGB(255, 255, 247, 0),
                               ),
                             ),
                             Marker(
+                              rotate: true,
                               point: routpoints[routpoints.length - 1],
                               builder: (context) => Icon(
                                 Icons.adjust_rounded,
@@ -162,7 +170,7 @@ class _HomeState extends State<Home> {
                                       offset: Offset(2.0, 2.0))
                                 ],
                                 size: 60,
-                                color: Color.fromARGB(255, 77, 255, 0),
+                                color: Color.fromARGB(255, 51, 255, 0),
                               ),
                             ),
                           ],
@@ -175,7 +183,8 @@ class _HomeState extends State<Home> {
                                 color: Color.fromARGB(255, 255, 0, 0),
                                 strokeWidth: 7)
                           ],
-                        )
+                        ),
+                        MapCard(double.parse(duration.toStringAsFixed(2)))
                       ],
                     ),
                   ),
