@@ -1,16 +1,36 @@
 import 'package:flutter/material.dart';
 
 class MapCard extends StatelessWidget {
-  double duration; // Duración de la ruta en segundos
+  double duration,distance; // Duración de la ruta en segundos
 
-  MapCard(this.duration, {super.key});
+  MapCard(this.duration, this.distance, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return Card(
-        child: Text('Duración de la ruta $duration minutos',
-            style: TextStyle(
+      color: const Color.fromARGB(255, 0, 0, 0),
+      child: IntrinsicHeight(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Duración: $duration minutos',
+            style: const TextStyle(
+              fontSize: 20,
+              color: Color.fromARGB(255, 255, 255, 255),
               fontWeight: FontWeight.bold,
-            )));
+            ),
+          ),
+          Text(
+            'Distancia: $distance metros',
+            style: const TextStyle(
+              fontSize: 20,
+              color: Color.fromARGB(255, 255, 255, 255),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+      ));
   }
 }

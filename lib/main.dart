@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 void main() {
-  runApp(Autonomus_app());
+  runApp(const Autonomus_app());
 }
 
 class Autonomus_app extends StatelessWidget {
@@ -18,7 +18,7 @@ class Autonomus_app extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Home(),
     );
@@ -37,14 +37,14 @@ class _HomeState extends State<Home> {
   //final start = TextEditingController();
   final end = TextEditingController();
   bool isVisible = false;
-  double duration = 0.0;
-  List<LatLng> routpoints = [LatLng(52.05884, -1.345583)];
+  double duration = 0.0, distance = 0.0;
+  List<LatLng> routpoints = [const LatLng(0.0, 0.0)];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'AUTONOMUS APP',
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
         ),
@@ -64,15 +64,33 @@ class _HomeState extends State<Home> {
                 // ),
                 myInput(
                     controler: end, hint: 'Ingrese su dirección de Destino'),
-                SizedBox(
+                const SizedBox(
                   height: 15,
                 ),
                 ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: Color.fromARGB(255, 0, 21, 255),
-                        foregroundColor: Color.fromARGB(255, 255, 255, 255),
+                        backgroundColor: const Color.fromARGB(255, 0, 21, 255),
+                        foregroundColor:
+                            const Color.fromARGB(255, 255, 255, 255),
                         fixedSize: Size(100, 50)),
                     onPressed: () async {
+                      setState(() {
+                        isVisible = false;
+                      });
+
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (BuildContext context) {
+                          return const Dialog(
+                            backgroundColor: Colors.transparent,
+                            elevation: 0,
+                            child: Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                        },
+                      );
                       List<double> startCoordinates =
                           await locationService.getCurrentLocation();
                       double startLatitude = startCoordinates[0];
@@ -92,33 +110,45 @@ class _HomeState extends State<Home> {
                       var v3 = end_l[0].latitude;
                       var v4 = end_l[0].longitude;
 
-                      var url = Uri.parse(
-                          'http://router.project-osrm.org/route/v1/driving/$v2,$v1;$v4,$v3?steps=true&annotations=true&geometries=geojson&overview=full');
-                      var response = await http.get(url);
-                      // print(url);
-                      print(response.body);
+                      try {
+                        var url = Uri.parse(
+                            'http://router.project-osrm.org/route/v1/driving/$v2,$v1;$v4,$v3?steps=true&annotations=true&geometries=geojson&overview=full');
+                        var response = await http.get(url);
+                        var url2 = Uri.parse(
+                            'http://10.0.2.2:5000/vehicles/');
+                        var response2 = await http.get(url2);
+                        print(response2.body);
+                        print(response.body);
 
-                      setState(() {
-                        routpoints = [];
-                        duration = (jsonDecode(response.body)['routes'][0]
-                            ['legs'][0]['duration'])/60;
-                        var router = jsonDecode(response.body)['routes'][0]
-                            ['geometry']['coordinates'];
-                        for (int i = 0; i < router.length; i++) {
-                          var coordinates = router[i].toString();
-                          coordinates = coordinates.replaceAll("[", "");
-                          coordinates = coordinates.replaceAll("]", "");
-                          var lat1 = coordinates.split(',');
-                          var long1 = coordinates.split(",");
-                          routpoints.add(LatLng(
-                              double.parse(lat1[1]), double.parse(long1[0])));
-                        }
-                        isVisible = !isVisible;
-                        print(routpoints);
-                      });
+                        setState(() {
+                          routpoints = [];
+                          duration = (jsonDecode(response.body)['routes'][0]
+                                  ['legs'][0]['duration']) /
+                              60;
+                          distance = (jsonDecode(response.body)['routes'][0]
+                              ['legs'][0]['distance']);
+                          var router = jsonDecode(response.body)['routes'][0]
+                              ['geometry']['coordinates'];
+                          for (int i = 0; i < router.length; i++) {
+                            var coordinates = router[i].toString();
+                            coordinates = coordinates.replaceAll("[", "");
+                            coordinates = coordinates.replaceAll("]", "");
+                            var lat1 = coordinates.split(',');
+                            var long1 = coordinates.split(",");
+                            routpoints.add(LatLng(
+                                double.parse(lat1[1]), double.parse(long1[0])));
+                          }
+                          isVisible = true;
+                          print(routpoints);
+                        });
+                      } catch (error) {
+                        print('Error: $error');
+                      }
+
+                      Navigator.of(context).pop();
                     },
-                    child: Text('Ir', style: TextStyle(fontSize: 20.0))),
-                SizedBox(
+                    child: const Text('Ir', style: TextStyle(fontSize: 20.0))),
+                const SizedBox(
                   height: 10,
                 ),
                 SizedBox(
@@ -128,7 +158,8 @@ class _HomeState extends State<Home> {
                     visible: isVisible,
                     child: FlutterMap(
                       options: MapOptions(
-                        center: routpoints[((routpoints.length-1)/2).toInt()],
+                        center:
+                            routpoints[((routpoints.length - 1) / 2).toInt()],
                         zoom: 15.0,
                         maxZoom: 25.0,
                         scrollWheelVelocity: 5.0,
@@ -154,7 +185,7 @@ class _HomeState extends State<Home> {
                                       offset: Offset(1.0, 3.0),
                                       spreadRadius: 20.0)
                                 ],
-                                color: Color.fromARGB(255, 255, 247, 0),
+                                color: const Color.fromARGB(255, 255, 247, 0),
                               ),
                             ),
                             Marker(
@@ -170,7 +201,7 @@ class _HomeState extends State<Home> {
                                       offset: Offset(2.0, 2.0))
                                 ],
                                 size: 60,
-                                color: Color.fromARGB(255, 51, 255, 0),
+                                color: const Color.fromARGB(255, 51, 255, 0),
                               ),
                             ),
                           ],
@@ -180,11 +211,12 @@ class _HomeState extends State<Home> {
                           polylines: [
                             Polyline(
                                 points: routpoints,
-                                color: Color.fromARGB(255, 255, 0, 0),
+                                color: const Color.fromARGB(255, 255, 0, 0),
                                 strokeWidth: 7)
                           ],
                         ),
-                        MapCard(double.parse(duration.toStringAsFixed(2)))
+                        MapCard(double.parse(duration.toStringAsFixed(2)),
+                            double.parse(distance.toStringAsFixed(2)))
                       ],
                     ),
                   ),
