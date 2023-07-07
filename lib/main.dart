@@ -114,10 +114,10 @@ class _HomeState extends State<Home> {
                         var url = Uri.parse(
                             'http://router.project-osrm.org/route/v1/driving/$v2,$v1;$v4,$v3?steps=true&annotations=true&geometries=geojson&overview=full');
                         var response = await http.get(url);
-                        var url2 = Uri.parse(
-                            'http://10.0.2.2:5000/vehicles/');
-                        var response2 = await http.get(url2);
-                        print(response2.body);
+                        // var url2 = Uri.parse(
+                        //     'http://10.0.2.2:5000/vehicles/');
+                        // var response2 = await http.get(url2);
+                        // print(response2.body);
                         print(response.body);
 
                         setState(() {
@@ -173,7 +173,7 @@ class _HomeState extends State<Home> {
                         MarkerLayer(
                           markers: [
                             Marker(
-                              point: routpoints[0],
+                             point: routpoints[0],
                               builder: (context) => Icon(
                                 Icons.local_taxi,
                                 weight: 20,
