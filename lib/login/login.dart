@@ -17,6 +17,15 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Color.fromARGB(255, 15, 15, 15),
+        appBar: AppBar(
+        title: const Text(
+          'INICIO DE SESION',
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+        ),
+        centerTitle: true,
+        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+      ),
         body: Center(
             child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -46,12 +55,20 @@ class _LoginPageState extends State<LoginPage> {
           controller: licenseNumber,
           keyboardType: TextInputType.text,
           decoration: const InputDecoration(
-            icon: Icon(Icons.airport_shuttle_outlined),
+            icon: Icon(Icons.airport_shuttle_outlined,color:Colors.blue),
             hintText: 'License number',
             labelText: 'License number',
+            hintStyle: TextStyle(
+              color: Color.fromARGB(255, 228, 225, 225), 
+            ),
+            labelStyle: TextStyle(
+              color: Colors.blue,
+            ),
+           focusColor: Color.fromARGB(255, 241, 233, 233),
           ),
-          onChanged: (value) {},
+          
         ),
+        
       );
     });
   }
@@ -64,12 +81,19 @@ class _LoginPageState extends State<LoginPage> {
           controller: password,
           keyboardType: TextInputType.visiblePassword,
           obscureText: true,
-          decoration: InputDecoration(
-            icon: Icon(Icons.lock_person),
+          decoration: const InputDecoration(
+            icon: Icon(Icons.lock_person,color:Colors.blue),
             hintText: 'Password',
             labelText: 'Password',
-          ),
+           hintStyle: TextStyle(
+              color: Color.fromARGB(255, 228, 225, 225), 
+            ),
+            labelStyle: TextStyle(
+              color: Colors.blue,
+            ),
+          focusColor: Color.fromARGB(255, 241, 233, 233),
         ),
+      )
       );
     });
   }

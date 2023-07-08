@@ -15,11 +15,11 @@ class main_app extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Home(),
-      initialRoute: RegisterPage.id,
-      //initialRoute: LoginPage.id,
+      //initialRoute: RegisterPage.id,
+      initialRoute: LoginPage.id,
       routes: {
-        RegisterPage.id:(context) => RegisterPage(),
-        //LoginPage.id:(context) => LoginPage(),
+        //RegisterPage.id:(context) => RegisterPage(),
+        LoginPage.id:(context) => LoginPage(),
       },
     );
   }
