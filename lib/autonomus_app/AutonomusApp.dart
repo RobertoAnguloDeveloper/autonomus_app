@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
-import '../login/login.dart';
 import 'CurrentLocation.dart';
 import 'MapCard.dart';
 import 'myInput.dart';
