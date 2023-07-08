@@ -19,16 +19,13 @@ class Autonomus_app extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Home(),
-      initialRoute: LoginPage.id,
-      routes: {
-        LoginPage.id:(context) => LoginPage(),
-      },
     );
   }
 }
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
+  static String id = "autonomus_home";
 
   @override
   State<Home> createState() => _HomeState();
@@ -37,6 +34,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   LocationService locationService = LocationService();
   //final start = TextEditingController();
+
   final end = TextEditingController();
   bool isVisible = false;
   double duration = 0.0, distance = 0.0;
@@ -102,8 +100,6 @@ class _HomeState extends State<Home> {
                         end.text = end.text + ", Cartagena";
                       }
 
-                      // List<Location> start_l =
-                      //     await locationFromAddress(start.text);
                       List<Location> end_l =
                           await locationFromAddress(end.text);
 
@@ -116,10 +112,13 @@ class _HomeState extends State<Home> {
                         var url = Uri.parse(
                             'http://router.project-osrm.org/route/v1/driving/$v2,$v1;$v4,$v3?steps=true&annotations=true&geometries=geojson&overview=full');
                         var response = await http.get(url);
-                        // var url2 = Uri.parse(
-                        //     'http://10.0.2.2:5000/vehicles/');
-                        // var response2 = await http.get(url2);
+
+                        print(url);
+                        // var updateposition = Uri.parse('http://10.0.2.2:5000/vehicle/updateroute/$license/$startLatitude,$startLongitude');
+
+                        // var response2 = await http.put(updateposition);
                         // print(response2.body);
+
                         print(response.body);
 
                         setState(() {
@@ -175,35 +174,23 @@ class _HomeState extends State<Home> {
                         MarkerLayer(
                           markers: [
                             Marker(
-                             point: routpoints[0],
-                              builder: (context) => Icon(
-                                Icons.local_taxi,
-                                weight: 20,
-                                size: 50,
-                                shadows: [
-                                  BoxShadow(
-                                      color: Colors.black.withOpacity(1.0),
-                                      blurRadius: 5.0,
-                                      offset: Offset(1.0, 3.0),
-                                      spreadRadius: 20.0)
-                                ],
-                                color: const Color.fromARGB(255, 255, 247, 0),
+                              point: routpoints[0],
+                              width: 70,
+                              height: 70,
+                              anchorPos: AnchorPos.align(AnchorAlign.center),
+                              rotateAlignment: Alignment.center,
+                              builder: (_) => Image.asset(
+                                'assets/image/car3.png',
                               ),
                             ),
                             Marker(
-                              rotate: true,
                               point: routpoints[routpoints.length - 1],
-                              builder: (context) => Icon(
-                                Icons.adjust_rounded,
-                                weight: 50,
-                                shadows: [
-                                  BoxShadow(
-                                      color: Colors.black.withOpacity(1.0),
-                                      blurRadius: 5.0,
-                                      offset: Offset(2.0, 2.0))
-                                ],
-                                size: 60,
-                                color: const Color.fromARGB(255, 51, 255, 0),
+                              width: 50,
+                              height: 50,
+                              anchorPos: AnchorPos.align(AnchorAlign.center),
+                              rotateAlignment: Alignment.center,
+                              builder: (_) => Image.asset(
+                                'assets/image/flag.png',
                               ),
                             ),
                           ],
